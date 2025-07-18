@@ -79,3 +79,11 @@ erDiagram
 	estimate_status 1--1+ estimates  : ""
 	clients 1--1+ estimates : ""
 ```
+
+# Wireframes
+
+![wireframes](attachments/ui-flows.png)
+
+## Excalidraw
+
+![[Ui flows.excalidraw]]
