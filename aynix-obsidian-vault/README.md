@@ -35,3 +35,47 @@ flowchart TD
     clients --> add_client_2([Add Client])
     clients --> edit_client_2([Edit Client])
 ```
+
+# DB
+
+```mermaid
+erDiagram
+	users {
+		int id PK
+		string email
+		string hash
+	}
+	clients {
+		int id PK
+		int user_id FK
+		string email
+		string phone
+	}
+	estimates {
+		int id PK
+		int user_id FK
+		int estimate_status_id FK
+		int client_id FK
+		text description
+		float laborCost
+		jsonb[] materials
+		float materialsTotal
+		float totalCost
+	}
+	estimate_status {
+		int id PK
+		string name
+		string color
+	}
+	"materials (frontend_only)" {
+		string name
+		float quantity
+		float unitPrice
+		float total
+	}
+
+	users 1--1+ clients : ""
+	users 1--1+ estimates : ""
+	estimate_status 1--1+ estimates  : ""
+	clients 1--1+ estimates : ""
+```
