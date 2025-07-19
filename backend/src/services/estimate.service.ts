@@ -24,6 +24,50 @@ export class EstimateService extends MainService<UserNode> {
   /**
    * List estimates for dashboard page
    */
+  async fetchOne(estimateId: number, userId: number) {
+    const estimateFields = ['*'].map(field => `${this._tableName}.${field}`)
+
+    const clientTableName = 'clients'
+    const clientPrefix = 'client'
+    const clientFields = ['id', 'name'].map(
+      field => `${clientTableName}.${field} as ${clientPrefix}__${field}`,
+    )
+
+    const estimateStatusTableName = 'estimate_status'
+    const estimateStatusPrefix = 'estimate_status'
+    const estimateStatusFields = ['id', 'name', 'color'].map(
+      field =>
+        `${estimateStatusTableName}.${field} as ${estimateStatusPrefix}__${field}`,
+    )
+
+    let sql = `
+      SELECT
+        ${[...estimateFields, ...clientFields, ...estimateStatusFields].join(', ')}
+      FROM
+        ${this._tableName}
+      LEFT JOIN ${clientTableName} ON
+        ${clientTableName}.id = ${this._tableName}.client_id
+      LEFT JOIN ${estimateStatusTableName} ON
+        ${estimateStatusTableName}.id = ${this._tableName}.estimate_status_id
+      WHERE
+        ${this._tableName}.user_id = $1
+        AND ${this._tableName}.id = $2
+    `
+
+    const client = await this.connect()
+    try {
+      const { rows } = await client.query(sql, [userId, estimateId])
+      return rows[0]
+    } catch (error) {
+      throw error
+    } finally {
+      client.release()
+    }
+  }
+
+  /**
+   * List estimates for dashboard page
+   */
   async summary(userId: number) {
     const estimateFields = ['id', 'total_cost'].map(
       field => `${this._tableName}.${field}`,

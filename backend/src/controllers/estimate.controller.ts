@@ -25,6 +25,31 @@ export class EstimateController extends MainController {
     }
   }
 
+  /** fetch estimation from id */
+  static async fetch(
+    fastify: FastifyInstance,
+    request: FastifyRequest<{ Params: { id: number } }>,
+    reply: FastifyReply,
+  ) {
+    try {
+      const service = new EstimateService(fastify)
+      if (request.auth_user?.user_id) {
+        const data = await service.fetchOne(
+          request.params.id,
+          request.auth_user.user_id,
+        )
+        return reply.send({ data })
+      }
+
+      return reply.status(403).send({})
+    } catch (error) {
+      console.error('error ', error)
+      return reply.status(500).send({
+        status: 'Server error',
+      })
+    }
+  }
+
   /** Create empty estimation */
   static async createEmpty(
     fastify: FastifyInstance,

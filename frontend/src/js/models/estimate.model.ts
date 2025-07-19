@@ -8,6 +8,10 @@ export interface EstimateNode {
 }
 
 export default class EstimateModel extends MainModel<EstimateNode> {
+  get id() {
+    return this.node.id
+  }
+
   get totalCost() {
     return `$ ${this.node.total_cost} USD`
   }

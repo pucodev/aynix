@@ -19,6 +19,17 @@ export function estimateRoutes(
     )
   })
 
+  /** Fetch estimate */
+  fastify.get(
+    '/:id',
+    (
+      request: FastifyRequest<{ Params: { id: number } }>,
+      reply: FastifyReply,
+    ) => {
+      EstimateController.fetch(fastify, request, reply)
+    },
+  )
+
   /** Create empty estimate */
   fastify.post('/empty', (request: FastifyRequest, reply: FastifyReply) => {
     EstimateController.createEmpty(
