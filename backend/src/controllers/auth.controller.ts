@@ -56,6 +56,12 @@ export class AuthController extends MainController {
     request.body.password = await UserModel.hashPassword(request.body.password)
     const data = await new AuthService(fastify).signup(request.body)
 
-    reply.send({ status: 'OK', data })
+    reply.send({
+      status: 'OK',
+      data: {
+        email: data.email,
+        tokens: new UserModel(data).getTokens(),
+      },
+    })
   }
 }

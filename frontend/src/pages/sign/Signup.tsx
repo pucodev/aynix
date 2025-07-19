@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import MeModel from '../../js/models/me.model'
 
@@ -6,13 +6,17 @@ export default function Signup() {
   const [email, setEmail] = useState('email@yopmail.com')
   const [password, setPassword] = useState('password')
   const [code, setCode] = useState('1234')
+  const navigate = useNavigate()
 
   async function signup() {
-    await MeModel.signup({
+    const response = await MeModel.signup({
       email,
       password,
       code,
     })
+
+    MeModel.saveTokens(response.tokens)
+    navigate('/')
   }
   return (
     <div className="page-base">

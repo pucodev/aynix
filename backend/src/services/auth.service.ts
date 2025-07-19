@@ -1,6 +1,7 @@
 import format from 'pg-format'
-import fastify, { FastifyInstance } from 'fastify'
-import { UserService } from './user.service'
+import { FastifyInstance } from 'fastify'
+import { PoolClient, QueryResult } from 'pg'
+import { UserNode } from '../models/user.model'
 
 export interface SignupNode {
   email: string
@@ -8,32 +9,39 @@ export interface SignupNode {
 }
 
 export class AuthService {
-  _fastify: FastifyInstance
+  private _fastify: FastifyInstance
 
   constructor(fastify: FastifyInstance) {
     this._fastify = fastify
   }
 
-  async connect() {
-    return await this._fastify.pg.connect()
+  private async connect(): Promise<PoolClient> {
+    return this._fastify.pg.connect()
   }
 
-  public async signup(data: SignupNode) {
+  public async signup(data: SignupNode): Promise<UserNode> {
     const client = await this.connect()
 
-    const sql = format(
-      'INSERT INTO %I (%I) VALUES (%s) RETURNING *',
-      'users',
-      ['email', 'password'],
-      ['$1', '$2'],
-    )
+    try {
+      const sql = format(
+        'INSERT INTO %I (%I) VALUES (%s) RETURNING *',
+        'users',
+        ['email', 'password'],
+        ['$1', '$2'],
+      )
 
-    const { rows } = await client.query(sql, [data.email, data.password])
+      const result: QueryResult<UserNode> = await client.query(sql, [
+        data.email,
+        data.password,
+      ])
 
-    if (Array.isArray(rows)) {
-      return rows[0]
+      if (Array.isArray(result.rows)) {
+        return result.rows[0]
+      }
+
+      return result.rows
+    } finally {
+      client.release()
     }
-
-    return rows
   }
 }
