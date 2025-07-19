@@ -24,7 +24,7 @@ export class MainService<NodeType> {
     this._timestampFields = ['created_at', 'updated_at']
   }
 
-  async connect() {
+  public async connect() {
     return await this._fastify.pg.connect()
   }
 
