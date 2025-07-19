@@ -23,8 +23,9 @@ export class AuthController extends MainController {
     reply: FastifyReply,
   ) {
     if (request.body.code !== process.env.SIGNUP_CODE) {
-      reply.status(403).send({
+      return reply.status(403).send({
         status: 'Invalid code',
+        error_code: 'AUTH_SIGNUP_INVALID_CODE',
       })
     }
 
@@ -37,8 +38,9 @@ export class AuthController extends MainController {
     const result = SignupSchema.safeParse(request.body)
 
     if (!result.success) {
-      reply.status(400).send({
+      return reply.status(400).send({
         status: 'Invalid data',
+        error_code: 'AUTH_SIGNUP_INVALID_DATA',
       })
     }
 
@@ -49,15 +51,16 @@ export class AuthController extends MainController {
     )
 
     if (users.length > 0) {
-      reply.status(400).send({
+      return reply.status(400).send({
         status: 'User already exist',
+        error_code: 'AUTH_SIGNUP_USER_ALREADY_EXISTS',
       })
     }
 
     request.body.password = await UserModel.hashPassword(request.body.password)
     const data = await new AuthService(fastify).signup(request.body)
 
-    reply.send({
+    return reply.send({
       status: 'OK',
       data: {
         email: data.email,
@@ -81,6 +84,7 @@ export class AuthController extends MainController {
     if (users.length <= 0) {
       return reply.status(403).send({
         status: 'Unauthorized user',
+        error_code: 'AUTH_SIGNIN_UNAUTHORIZED',
       })
     }
 
@@ -93,6 +97,7 @@ export class AuthController extends MainController {
     if (!isPasswordValid) {
       return reply.status(403).send({
         status: 'Unauthorized user',
+        error_code: 'AUTH_SIGNIN_UNAUTHORIZED',
       })
     }
 

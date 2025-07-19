@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import MeModel from '../../js/models/me.model'
+import { isApiError } from '../../js/api'
+import { showError } from '../../js/utils/utils'
 
 export default function Signin() {
   const [email, setEmail] = useState('hola2@demo.com')
@@ -8,13 +10,29 @@ export default function Signin() {
   const navigate = useNavigate()
 
   async function signin() {
-    const response = await MeModel.signin({
-      email,
-      password,
-    })
+    try {
+      const response = await MeModel.signin({
+        email,
+        password,
+      })
 
-    MeModel.saveTokens(response.tokens)
-    navigate('/')
+      MeModel.saveTokens(response.tokens)
+      navigate('/')
+    } catch (error) {
+      if (isApiError(error)) {
+        switch (error.api_error_code) {
+          case 'AUTH_SIGNIN_UNAUTHORIZED':
+            showError('Invalid email or password. Please try again')
+            break
+
+          default:
+            showError('An error occurred. Please try again')
+            break
+        }
+      } else {
+        showError('An error occurred. Please try again')
+      }
+    }
   }
 
   return (

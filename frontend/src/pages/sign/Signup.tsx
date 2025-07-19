@@ -1,6 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import MeModel from '../../js/models/me.model'
+import { showError } from '../../js/utils/utils'
+import { isApiError } from '../../js/api'
 
 export default function Signup() {
   const [email, setEmail] = useState('email@yopmail.com')
@@ -9,14 +11,37 @@ export default function Signup() {
   const navigate = useNavigate()
 
   async function signup() {
-    const response = await MeModel.signup({
-      email,
-      password,
-      code,
-    })
+    try {
+      const response = await MeModel.signup({
+        email,
+        password,
+        code,
+      })
 
-    MeModel.saveTokens(response.tokens)
-    navigate('/')
+      MeModel.saveTokens(response.tokens)
+      navigate('/')
+    } catch (error) {
+      if (isApiError(error)) {
+        switch (error.api_error_code) {
+          case 'AUTH_SIGNUP_INVALID_CODE':
+            showError('Please enter a valid code or contact the administrator')
+            break
+
+          case 'AUTH_SIGNUP_INVALID_DATA':
+            showError('Please enter a valid email and password')
+            break
+
+          case 'AUTH_SIGNUP_USER_ALREADY_EXISTS':
+            showError('User already exists. Please use a different email')
+            break
+
+          default:
+            break
+        }
+      } else {
+        showError('An error occurred. Please try again')
+      }
+    }
   }
   return (
     <div className="page-base">
