@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS public.estimates (
   id SERIAL PRIMARY KEY,
   user_id INT NOT NULL,
   estimate_status_id INT NOT NULL,
-  client_id INT NOT NULL,
+  client_id INT,
   description TEXT,
   labor_cost NUMERIC,
   materials_total NUMERIC,

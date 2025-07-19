@@ -3,6 +3,7 @@ import Signin from '../pages/sign/Signin'
 import Signup from '../pages/sign/Signup'
 import { ProtectedRoute } from './ProtectedRoute'
 import Home from '../pages/home/Home'
+import EditEstimate from '../pages/estimate/EditEstimate'
 
 export const router = createBrowserRouter([
   {
@@ -16,6 +17,12 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <ProtectedRoute />,
-    children: [{ path: '', element: <Home /> }],
+    children: [
+      { path: '', element: <Home /> },
+      {
+        path: 'estimates/:id',
+        element: <EditEstimate />,
+      },
+    ],
   },
 ])

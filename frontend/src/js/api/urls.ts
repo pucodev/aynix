@@ -7,6 +7,7 @@ export const urls = {
     SIGNUP: `${API_URL}/auth/signup`,
   },
   ESTIMATES: {
+    CREATE_EMPTY: `${API_URL}/estimates/empty`,
     SUMMARY: `${API_URL}/estimates/summary`,
   },
 }

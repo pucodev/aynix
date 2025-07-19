@@ -1,6 +1,6 @@
 import MainModel from './main.model'
 
-interface EstimateNode {
+export interface EstimateNode {
   id?: number
   labor_cost?: number
   description?: string
