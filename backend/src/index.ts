@@ -2,9 +2,14 @@ import Fastify from 'fastify'
 import { v1Routes } from './routes/v1/v1.route'
 import { configDbService } from './services/config.service'
 import fastifyFormbody from '@fastify/formbody'
+import fastifyCors from '@fastify/cors'
 
 const fastify = Fastify({
   logger: true,
+})
+
+await fastify.register(fastifyCors, {
+  origin: true,
 })
 
 fastify.register(fastifyFormbody)
