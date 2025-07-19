@@ -9,6 +9,7 @@ export interface UserNode {
   firstname?: string
   lastname?: string
   email?: string
+  password?: string
 }
 
 export class UserModel extends MainModel<UserNode> {

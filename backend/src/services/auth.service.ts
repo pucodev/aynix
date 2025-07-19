@@ -8,6 +8,11 @@ export interface SignupNode {
   password: string
 }
 
+export interface SigninNode {
+  email: string
+  password: string
+}
+
 export class AuthService {
   private _fastify: FastifyInstance
 

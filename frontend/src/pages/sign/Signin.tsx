@@ -1,6 +1,22 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import MeModel from '../../js/models/me.model'
 
 export default function Signin() {
+  const [email, setEmail] = useState('hola2@demo.com')
+  const [password, setPassword] = useState('2133123')
+  const navigate = useNavigate()
+
+  async function signin() {
+    const response = await MeModel.signin({
+      email,
+      password,
+    })
+
+    MeModel.saveTokens(response.tokens)
+    navigate('/')
+  }
+
   return (
     <div className="page-base">
       <div
@@ -12,14 +28,26 @@ export default function Signin() {
         <div className="is-flex is-gap-3 is-flex-column">
           <div className="field">
             <label className="label">Email</label>
-            <input className="input" type="text" placeholder="Email" />
+            <input
+              className="input"
+              type="text"
+              placeholder="Email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+            />
           </div>
           <div className="field">
             <label className="label">Password</label>
-            <input className="input" type="password" placeholder="Password" />
+            <input
+              className="input"
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+            />
           </div>
           <div className="w-100 mt-3">
-            <button className="btn" style={{ width: '100%' }}>
+            <button className="btn" style={{ width: '100%' }} onClick={signin}>
               Sign In
             </button>
           </div>

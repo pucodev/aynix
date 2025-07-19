@@ -8,6 +8,7 @@ import {
   AuthController,
   SignupCodeNode,
 } from '../../controllers/auth.controller'
+import { SigninNode } from '../../services/auth.service'
 
 export function authRoutes(
   fastify: FastifyInstance,
@@ -17,6 +18,14 @@ export function authRoutes(
     AuthController.signup(
       fastify,
       request as FastifyRequest<{ Body: SignupCodeNode }>,
+      reply,
+    )
+  })
+
+  fastify.post('/signin', (request: FastifyRequest, reply: FastifyReply) => {
+    AuthController.signin(
+      fastify,
+      request as FastifyRequest<{ Body: SigninNode }>,
       reply,
     )
   })

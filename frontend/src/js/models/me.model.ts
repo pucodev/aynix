@@ -29,6 +29,15 @@ export default class MeModel extends UserModel {
     return response.data.data
   }
 
+  public static async signin(data: { email: string; password: string }) {
+    const response = await Api.request<{ data: { tokens: UserTokens } }>(
+      'post',
+      urls.SIGN.SINGIN,
+      data,
+    )
+    return response.data.data
+  }
+
   public static saveTokens(tokens: UserTokens) {
     localStorage.setItem(USER_TOKEN_TAG, JSON.stringify(tokens))
   }
