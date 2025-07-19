@@ -1,0 +1,42 @@
+.loader--search {
+  --loader-search-color: var(--pui-color-primary);
+
+  width: 48px;
+  height: 48px;
+  display: block;
+  margin: 12px auto;
+  position: relative;
+  border: 6px solid var(--loader-search-color);
+  border-radius: 50%;
+  box-sizing: border-box;
+  animation: animloader 2s linear infinite;
+}
+.loader--search::after {
+  content: '';
+  box-sizing: border-box;
+  width: 6px;
+  height: 24px;
+  background: var(--loader-search-color);
+  transform: rotate(-45deg);
+  position: absolute;
+  bottom: -21px;
+  left: 43px;
+}
+
+@keyframes animloader {
+  0% {
+    transform: translate(-10px, -10px);
+  }
+  25% {
+    transform: translate(-10px, 10px);
+  }
+  50% {
+    transform: translate(10px, 10px);
+  }
+  75% {
+    transform: translate(10px, -10px);
+  }
+  100% {
+    transform: translate(-10px, -10px);
+  }
+}

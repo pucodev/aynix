@@ -11,7 +11,7 @@ const USER_TOKEN_TAG = '_ut'
 
 export default class MeModel extends UserModel {
   public static getUserToken() {
-    return ''
+    return this.getTokens()?.access_token || ''
   }
 
   public static getRefreshToken() {

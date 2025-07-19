@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS public.estimate_status (
 CREATE TABLE IF NOT EXISTS public.clients (
   id SERIAL PRIMARY KEY,
   user_id INT NOT NULL,
+  name VARCHAR(255),
   email VARCHAR(100),
   phone VARCHAR(100),
   created_at timestamptz NULL DEFAULT CURRENT_TIMESTAMP,

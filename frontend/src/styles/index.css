@@ -20,9 +20,33 @@ body,
   width: 100%;
 }
 
+.is-list-pointer .list-item {
+  cursor: pointer;
+}
+
+/* OTHERS */
 .page-base {
   display: flex;
   width: 100%;
   align-items: center !important;
   justify-content: center !important;
+}
+
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  height: 100%;
+  /* background-color: red; */
+}
+
+.page-content {
+  flex: 1 1 0;
+  /* background-color: blue; */
+  height: 100%;
+  position: relative;
+}
+
+.page-container {
+  width: 100%;
+  max-width: 1200px;
 }

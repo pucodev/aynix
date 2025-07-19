@@ -1,7 +1,7 @@
-export default class MainModel<T> {
-  protected _node: T
+export default class MainModel<Node> {
+  node: Node
 
-  constructor(node: T) {
-    this._node = node
+  constructor(node: Node) {
+    this.node = node
   }
 }

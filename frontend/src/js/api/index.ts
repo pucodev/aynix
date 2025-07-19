@@ -34,7 +34,7 @@ const Api = {
   >(
     method: HttpMethod,
     url: string,
-    data: TData,
+    data?: TData,
   ): Promise<AxiosResponse<TResponse>> {
     const request: AxiosRequestConfig = {
       method,
