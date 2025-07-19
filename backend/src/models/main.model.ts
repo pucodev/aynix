@@ -1,12 +1,12 @@
 import { MainService } from '../services/main.service'
 
-export class MainModel {
-  node: any
+export class MainModel<T> {
+  node: T
   /**
    * Create model
    * @param {object} node model node
    */
-  constructor(node: any) {
+  constructor(node: T) {
     this.node = node
   }
 

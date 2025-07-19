@@ -1,11 +1,9 @@
-import { FastifyInstance } from 'fastify'
-import { userRoutes } from './user.route'
+import { FastifyInstance, FastifyPluginOptions } from 'fastify'
+import { authRoutes } from './auth.route'
 
-/**
- * Routes
- * @param {import("fastify").FastifyInstance} fastify  Encapsulated Fastify Instance
- * @param {object} _options plugin options, refer to https://fastify.dev/docs/latest/Reference/Plugins/#plugin-options
- */
-export function v1Routes(fastify: FastifyInstance, _options: any) {
-  fastify.register(userRoutes, { prefix: '/users' })
+export function v1Routes(
+  fastify: FastifyInstance,
+  _options: FastifyPluginOptions,
+) {
+  fastify.register(authRoutes, { prefix: '/auth' })
 }

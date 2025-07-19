@@ -2,7 +2,7 @@ import format from 'pg-format'
 import { QueryFilter } from '../controllers/main.controller'
 import { FastifyInstance } from 'fastify'
 
-export class MainService {
+export class MainService<NodeType> {
   _fastify: FastifyInstance
   _tableName: string
   _fields: string[]
@@ -135,7 +135,7 @@ export class MainService {
    * @param {import('../controllers/main.controller').QueryFilter[]} filters params to filter
    * @returns {Promise<object>} Registro actualizado
    */
-  async fetch(fields: string[], filters: QueryFilter[]): Promise<any> {
+  async fetch(fields: string[], filters: QueryFilter[]): Promise<NodeType[]> {
     const client = await this.connect()
 
     try {
@@ -177,7 +177,7 @@ export class MainService {
       // Agregamos los WHERE
       if (validFilters.length > 0) {
         const items = validFilters.map(
-          (item, index) => `(${item.field} ${item.logic || '='} ${index + 1})`,
+          (item, index) => `(${item.field} ${item.logic || '='} $${index + 1})`,
         )
         sql += ` WHERE ${items.join(' AND ')}`
       }
