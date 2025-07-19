@@ -177,7 +177,7 @@ export class MainService {
       // Agregamos los WHERE
       if (validFilters.length > 0) {
         const items = validFilters.map(
-          (item, index) => `(${item.field} ${item.logic || '='} ${index + 1})`,
+          (item, index) => `(${item.field} ${item.logic || '='} $${index + 1})`,
         )
         sql += ` WHERE ${items.join(' AND ')}`
       }

@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import { UserService } from '../services/user.service'
 import { MainModel } from './main.model'
+import bcrypt from 'bcrypt'
 
 export interface UserNode {
   id?: number
@@ -8,13 +9,14 @@ export interface UserNode {
   lastname?: string
   email?: string
 }
+
 export class UserModel extends MainModel {
-  /** @param {UserNode} node user node  */
   constructor(node: UserNode) {
     super(node)
+  }
 
-    /** @type {UserNode} */
-    this.node = node
+  public static async hashPassword(password: string) {
+    return await bcrypt.hash(password, 12)
   }
 
   /**

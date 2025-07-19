@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^5.2.0",
+    "@types/bcrypt": "^6.0.0",
     "@types/node": "^24.0.14",
     "@types/pg": "^8.15.4",
     "@types/pg-format": "^1.0.5",
@@ -23,7 +24,9 @@
   "dependencies": {
     "@fastify/formbody": "^8.0.2",
     "@fastify/postgres": "^6.0.2",
+    "bcrypt": "^6.0.0",
     "fastify": "^5.4.0",
-    "pg-format": "^1.0.4"
+    "pg-format": "^1.0.4",
+    "zod": "^4.0.5"
   }
 }
