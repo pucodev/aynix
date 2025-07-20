@@ -131,8 +131,14 @@ export default function EditEstimate() {
         <Loader />
       ) : (
         <>
-          <div className="is-flex is-flex-column is-gap-3 pb-5">
-            <h1>Estimate #{estimate.id}</h1>
+          <div className="is-flex is-justify-content-space-between is-align-items-center pb-3">
+            <div>
+              <h2>Estimate #{estimate.id}</h2>
+              <div className="is-text-color-sub">Editing estimate</div>
+            </div>
+          </div>
+
+          <div className="is-flex is-flex-column is-gap-3 pb-5 pt-4">
             <div className="is-flex is-flex-column is-gap-3">
               {/* CLIENTS */}
               <div>

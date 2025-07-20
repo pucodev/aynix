@@ -94,8 +94,11 @@ export class EstimateController extends MainController {
         // TODO: Validate if client id is related to user
         isValid =
           typeof request.body.client_id !== 'undefined' &&
-          (typeof materials !== 'undefined' ||
-            typeof request.body.labor_cost !== 'undefined')
+          request.body.client_id !== null &&
+          ((typeof materials !== 'undefined' && materials.length > 0) ||
+            (typeof request.body.labor_cost !== 'undefined' &&
+              request.body.labor_cost !== null))
+
         message =
           'An estimate must include a client or materials before it can be completed'
       }

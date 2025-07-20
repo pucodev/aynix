@@ -25,6 +25,10 @@ export default class EstimateModel extends MainModel<EstimateNode> {
   }
 
   get totalCost() {
-    return `$ ${this.node.total_cost} USD`
+    if (this.node.total_cost) {
+      return `$ ${this.node.total_cost || '-'} USD`
+    }
+
+    return '-'
   }
 }

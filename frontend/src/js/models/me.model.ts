@@ -38,6 +38,10 @@ export default class MeModel extends UserModel {
     return response.data.data
   }
 
+  public static clearTokens() {
+    localStorage.removeItem(USER_TOKEN_TAG)
+  }
+
   public static saveTokens(tokens: UserTokens) {
     localStorage.setItem(USER_TOKEN_TAG, JSON.stringify(tokens))
   }

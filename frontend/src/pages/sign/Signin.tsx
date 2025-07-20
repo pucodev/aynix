@@ -5,8 +5,8 @@ import { isApiError } from '../../js/api'
 import { showError } from '../../js/utils/utils'
 
 export default function Signin() {
-  const [email, setEmail] = useState('hola2@demo.com')
-  const [password, setPassword] = useState('2133123')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
   async function signin() {
@@ -41,6 +41,10 @@ export default function Signin() {
         className="is-flex w-100 is-flex-column is-gap-5"
         style={{ maxWidth: '600px' }}
       >
+        <div className="w-100 is-flex is-justify-content-center">
+          <img src="/public/aynix logo sidebar.png" />
+        </div>
+
         <h1 className="is-text-center">Sign In</h1>
 
         <div className="is-flex is-gap-3 is-flex-column">

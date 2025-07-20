@@ -11,6 +11,7 @@ import AlertLoader from '../../components/loader/AlertLoader'
 import { useNavigate } from 'react-router-dom'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import { Link } from 'react-router-dom'
+import EmptyCard from '../../components/empty/EmptyCard'
 
 interface ResponseNode {
   id: number
@@ -85,10 +86,14 @@ export default function Home() {
 
   return (
     <>
-      <div className="is-flex is-justify-content-flex-end">
+      <div className="is-flex is-justify-content-space-between is-align-items-center pb-3">
+        <div>
+          <h2>Dashboard</h2>
+          <div className="is-text-color-sub">Welcome back</div>
+        </div>
         <button className="btn is-primary" onClick={createEstimate}>
           <Icon className="icon" icon="mdi:plus"></Icon>
-          <span>Add</span>
+          <span>Add estimate</span>
         </button>
       </div>
 
@@ -103,8 +108,22 @@ export default function Home() {
         <SearchLoader />
       ) : (
         <div className="is-flex is-flex-column is-gap-4 mt-5">
+          {estimates.length === 0 ? (
+            <EmptyCard
+              title="No estimations"
+              description="Looks empty! Create your first estimation"
+              icon="mdi:build"
+            >
+              <button className="btn is-primary" onClick={createEstimate}>
+                <Icon className="icon" icon="mdi:plus"></Icon>
+                <span>Add estimate</span>
+              </button>
+            </EmptyCard>
+          ) : (
+            <></>
+          )}
           {estimates.map(item => (
-            <div className="card" key={item.estimate.node.id}>
+            <div className="card is-outline" key={item.estimate.node.id}>
               <div className="card-body">
                 <div className="is-flex is-gap-3 is-justify-content-space-between is-align-items-center">
                   <div className="w-100">
