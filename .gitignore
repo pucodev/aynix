@@ -1,0 +1,7 @@
+.stfolder
+.aynixtmp
+
+.env
+*.env
+!*.example.env
+!example.env

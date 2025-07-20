@@ -1,0 +1,75 @@
+html,
+body {
+  font-family: 'Inter', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+  color: #252b37;
+}
+
+html,
+body,
+#root {
+  display: flex;
+  width: 100%;
+  min-height: 100%;
+}
+
+/* PUCOUI */
+.w-100 {
+  width: 100%;
+}
+
+.is-list-pointer .list-item {
+  cursor: pointer;
+}
+
+.card.is-outline {
+  border: solid 1px #e9eaeb;
+  box-shadow: unset;
+}
+
+/* OTHERS */
+.page-base {
+  display: flex;
+  width: 100%;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.sidebar,
+.sidebar-wrapper {
+  width: 260px;
+  flex-shrink: 0;
+  height: 100%;
+  /* background-color: red; */
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-right: solid 1px #e9eaeb;
+}
+
+.page-content {
+  flex: 1 1 0;
+  /* background-color: blue; */
+  height: 100%;
+  position: relative;
+}
+
+.page-container {
+  width: 100%;
+  max-width: 1200px;
+}
+
+:root {
+  --pui-color-primary: #e3b100;
+}
+
+.is-text-color-sub {
+  color: #535862;
+}
