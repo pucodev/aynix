@@ -61,7 +61,7 @@ export function ProtectedRoute() {
             style={{ height: '100%' }}
           >
             <div className="w-100 pt-3 pb-4">
-              <img src="/public/aynix logo sidebar.png" />
+              <img src="/aynix logo sidebar.png" />
             </div>
             <div
               className="is-flex is-flex-column px-3 py-2 list-group is-hoverable is-primary is-list-pointer is-justify-content-space-between"

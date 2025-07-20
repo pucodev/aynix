@@ -57,10 +57,10 @@ erDiagram
 		int estimate_status_id FK
 		int client_id FK
 		text description
-		float laborCost
+		numeric labor_cost
 		jsonb[] materials
-		float materialsTotal
-		float totalCost
+		numeric materials_total
+		numeric totalCost
 	}
 	estimate_status {
 		int id PK

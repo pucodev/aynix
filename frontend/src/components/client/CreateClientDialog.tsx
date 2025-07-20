@@ -15,7 +15,7 @@ export default function CreateClientDialog({ onClose, onSave }: Props) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [_isSubmitting, setIsSubmitting] = useState(false)
 
   const [isErrorName, setIsErrorName] = useState(false)
   const [isErrorEmail, setIsErrorEmail] = useState(false)

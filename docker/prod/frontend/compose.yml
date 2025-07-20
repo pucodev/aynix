@@ -1,0 +1,15 @@
+services:
+  aynix-app:
+    build:
+      context: ../../../frontend
+      dockerfile: ../docker/prod/frontend/Dockerfile
+    container_name: ${CONTAINER_NAME:-aynix-app}
+    ports:
+      - '${PORT:-4001}:80'
+    restart: always
+    networks:
+      - aynix-network
+
+networks:
+  aynix-network:
+    driver: bridge
