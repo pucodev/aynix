@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Loader from '../../components/loader/Loader'
 import Api from '../../js/api'
 import { urls } from '../../js/api/urls'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import type { EstimateNode } from '../../js/models/estimate.model'
 import EstimateModel from '../../js/models/estimate.model'
 import type { ClientNode } from '../../js/models/client.model'
@@ -13,8 +13,10 @@ import SimpleLoader from '../../components/loader/SimpleLoader'
 import CreateMaterialDialog from '../../components/materials/CreateMaterialDialog'
 import type { MaterialNode } from '../../js/models/material.model'
 import MaterialModel from '../../js/models/material.model'
-import { formatCurrency } from '../../js/utils/utils'
+import { formatCurrency, showError } from '../../js/utils/utils'
 import MaterialRow from '../../components/editEstimates/MaterialRow'
+import EstimateStatusModel from '../../js/models/estimateStatus.model'
+import { isAxiosError } from 'axios'
 
 export default function EditEstimate() {
   const [isLoading, setIsLoading] = useState(true)
@@ -27,6 +29,9 @@ export default function EditEstimate() {
   const [selectedClientId, setSelectedClientId] = useState<number>()
   const [description, setDescription] = useState('')
   const [isCreateMaterial, setIsCreateMaterial] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [laborCost, setLaborCost] = useState<number>()
+  const navigate = useNavigate()
 
   const [materials, setMaterials] = useState<MaterialModel[]>([])
 
@@ -83,6 +88,32 @@ export default function EditEstimate() {
     }
   }
 
+  async function saveEstimate(status: number) {
+    setIsSubmitting(true)
+    const data: EstimateNode = {
+      description,
+      client_id: selectedClientId,
+      materials: materials.map(material => material.getApiData()),
+      labor_cost: laborCost,
+      estimate_status_id: status,
+    }
+
+    try {
+      await Api.request('patch', `${urls.ESTIMATES.ROOT}/${id}`, data)
+
+      navigate('/')
+    } catch (error) {
+      console.log('is error ', isAxiosError(error))
+      if (isAxiosError(error)) {
+        showError(error.response?.data?.message || '')
+      } else {
+        showError('An unexpected error occurred. Please try again later')
+      }
+    }
+
+    setIsSubmitting(false)
+  }
+
   useEffect(() => {
     init()
   }, [])
@@ -93,7 +124,7 @@ export default function EditEstimate() {
         <Loader />
       ) : (
         <>
-          <div className="is-flex is-flex-column is-gap-3">
+          <div className="is-flex is-flex-column is-gap-3 pb-5">
             <h1>Estimate #{estimate.id}</h1>
             <div className="is-flex is-flex-column is-gap-3">
               {/* CLIENTS */}
@@ -227,6 +258,46 @@ export default function EditEstimate() {
                   Add material
                 </button>
               </div>
+
+              {/* LABOR COST */}
+              <div className="field mt-3">
+                <label className="label">Labor cost</label>
+                <input
+                  className="input"
+                  placeholder="Insert labor cost"
+                  type="number"
+                  value={laborCost}
+                  onChange={e =>
+                    setLaborCost(Number(e.target.value) || undefined)
+                  }
+                />
+              </div>
+            </div>
+
+            {/* SAVE */}
+            <div className="is-flex is-justify-content-flex-end mt-4 is-gap-4">
+              {isSubmitting ? (
+                <SimpleLoader />
+              ) : (
+                <>
+                  <button
+                    className="btn"
+                    onClick={() =>
+                      saveEstimate(EstimateStatusModel.PENDING_STATUS_ID)
+                    }
+                  >
+                    Save as Pending
+                  </button>
+                  <button
+                    className="btn is-success"
+                    onClick={() =>
+                      saveEstimate(EstimateStatusModel.COMPLETED_STATUS_ID)
+                    }
+                  >
+                    Save as Complete
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </>

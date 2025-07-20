@@ -13,10 +13,13 @@ export class EstimateService extends MainService<UserNode> {
 
   constructor(fastify: FastifyInstance) {
     super(fastify, EstimateService.TABLE_NAME, [
+      'user_id',
+      'estimate_status_id',
+      'client_id',
       'description',
       'labor_cost',
-      'materials',
       'materials_total',
+      'materials',
       'total_cost',
     ])
   }

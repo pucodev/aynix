@@ -5,6 +5,7 @@ import {
   FastifyRequest,
 } from 'fastify'
 import { EstimateController } from '../../controllers/estimate.controller'
+import { EstimateNode } from '../../models/estimate.model'
 
 export function estimateRoutes(
   fastify: FastifyInstance,
@@ -38,4 +39,15 @@ export function estimateRoutes(
       reply,
     )
   })
+
+  /** Update estimate */
+  fastify.patch(
+    '/:id',
+    (
+      request: FastifyRequest<{ Params: { id: number }; Body: EstimateNode }>,
+      reply: FastifyReply,
+    ) => {
+      EstimateController.update(fastify, request, reply)
+    },
+  )
 }

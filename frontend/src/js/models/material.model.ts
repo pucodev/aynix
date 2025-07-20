@@ -24,4 +24,12 @@ export default class MaterialModel extends MainModel<MaterialNode> {
 
     return '-'
   }
+
+  getApiData() {
+    return {
+      qty: this.node.qty,
+      name: this.node.name,
+      price: this.node.price,
+    }
+  }
 }
