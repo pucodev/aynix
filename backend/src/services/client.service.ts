@@ -1,6 +1,5 @@
 import { FastifyInstance } from 'fastify'
 import { MainService } from './main.service'
-import { UserNode } from '../models/user.model'
 import { ClientNode } from '../models/client.model'
 import { QueryResult } from 'pg'
 
@@ -8,7 +7,12 @@ export class ClientService extends MainService<ClientNode> {
   static TABLE_NAME = 'clients'
 
   constructor(fastify: FastifyInstance) {
-    super(fastify, ClientService.TABLE_NAME, ['name', 'phone'])
+    super(fastify, ClientService.TABLE_NAME, [
+      'name',
+      'phone',
+      'user_id',
+      'email',
+    ])
   }
 
   /**
@@ -30,6 +34,18 @@ export class ClientService extends MainService<ClientNode> {
       console.error(error)
     } finally {
       client.release()
+    }
+  }
+
+  /** Create client */
+  async create(userId: number, clientNode: ClientNode) {
+    clientNode.user_id = userId
+    try {
+      const response = await this.insert(clientNode)
+      return response
+    } catch (error) {
+      throw error
+    } finally {
     }
   }
 }

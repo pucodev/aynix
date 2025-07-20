@@ -14,4 +14,9 @@ export function clientRoutes(
   fastify.get('/', (request: FastifyRequest, reply: FastifyReply) => {
     ClientController.fetch(fastify, request, reply)
   })
+
+  /** Create client */
+  fastify.post('/', (request: FastifyRequest, reply: FastifyReply) => {
+    ClientController.create(fastify, request, reply)
+  })
 }
