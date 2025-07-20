@@ -23,7 +23,7 @@ export class EstimateModel extends MainModel<EstimateNode> {
   get totalCostMaterial() {
     if (Array.isArray(this.node.materials)) {
       return this.node.materials.reduce(
-        (sum, item) => sum + (item.price || 0) * (item.qty || 0),
+        (sum, item) => sum + Number(item.price || 0) * Number(item.qty || 0),
         0,
       )
     }
@@ -31,7 +31,7 @@ export class EstimateModel extends MainModel<EstimateNode> {
     return 0
   }
   get totalCost() {
-    let totalCost = this.node.labor_cost || 0
+    let totalCost = Number(this.node.labor_cost) || 0
 
     if (Array.isArray(this.node.materials)) {
       totalCost += this.totalCostMaterial

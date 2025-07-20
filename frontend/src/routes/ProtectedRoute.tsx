@@ -56,17 +56,27 @@ export function ProtectedRoute() {
     <div className="page-base">
       <aside className="sidebar-wrapper">
         <div className="sidebar">
-          <div className="w-100" style={{ height: '100%' }}>
+          <div
+            className="w-100 is-flex is-flex-column"
+            style={{ height: '100%' }}
+          >
             <div className="w-100 pt-3 pb-4">
               <img src="/public/aynix logo sidebar.png" />
             </div>
-            <div className="is-flex is-flex-column px-3 py-2 list-group is-hoverable is-primary is-list-pointer">
-              {items.map(item => (
-                <Link to={item.path} style={{ all: 'unset' }} key={item.id}>
-                  <Item icon={item.icon} name={item.name}></Item>
-                </Link>
-              ))}
-              <Item icon="mdi:logout" name="Logout" onClick={logout}></Item>
+            <div
+              className="is-flex is-flex-column px-3 py-2 list-group is-hoverable is-primary is-list-pointer is-justify-content-space-between"
+              style={{ flex: '1 0 auto' }}
+            >
+              <div style={{ flex: '1 0 auto' }}>
+                {items.map(item => (
+                  <Link to={item.path} style={{ all: 'unset' }} key={item.id}>
+                    <Item icon={item.icon} name={item.name}></Item>
+                  </Link>
+                ))}
+              </div>
+              <div className="pb-4">
+                <Item icon="mdi:logout" name="Logout" onClick={logout}></Item>
+              </div>
             </div>
           </div>
         </div>
