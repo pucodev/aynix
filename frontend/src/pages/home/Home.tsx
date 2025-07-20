@@ -10,6 +10,7 @@ import ClientModel from '../../js/models/client.model'
 import AlertLoader from '../../components/loader/AlertLoader'
 import { useNavigate } from 'react-router-dom'
 import { Icon } from '@iconify/react/dist/iconify.js'
+import { Link } from 'react-router-dom'
 
 interface ResponseNode {
   id: number
@@ -105,24 +106,38 @@ export default function Home() {
           {estimates.map(item => (
             <div className="card" key={item.estimate.node.id}>
               <div className="card-body">
-                <div className="is-flex is-justify-content-space-between">
-                  <div className="card-title">
-                    Estimate #{item.estimate.node.id}
+                <div className="is-flex is-gap-3 is-justify-content-space-between is-align-items-center">
+                  <div className="w-100">
+                    <div className="is-flex is-justify-content-space-between">
+                      <div className="card-title">
+                        Estimate #{item.estimate.node.id}
+                      </div>
+                      <span
+                        className="badge"
+                        style={
+                          {
+                            '--pui-badge-bg': item.estimateStatus.node.color,
+                          } as React.CSSProperties
+                        }
+                      >
+                        {item.estimateStatus.node.name}
+                      </span>
+                    </div>
+                    <div className="is-flex is-justify-content-space-between mt-3">
+                      <div>Cliente: {item.client.node.name || '-'}</div>
+                      <div className="h5">{item.estimate.totalCost}</div>
+                    </div>
                   </div>
-                  <span
-                    className="badge"
-                    style={
-                      {
-                        '--pui-badge-bg': item.estimateStatus.node.color,
-                      } as React.CSSProperties
-                    }
-                  >
-                    {item.estimateStatus.node.name}
-                  </span>
-                </div>
-                <div className="is-flex is-justify-content-space-between mt-3">
-                  <div>Cliente: {item.client.node.name || '-'}</div>
-                  <div className="h5">{item.estimate.totalCost}</div>
+                  <div>
+                    <Link to={`/estimates/${item.estimate.id}`}>
+                      <button
+                        className="btn is-tonal is-secondary is-rounded"
+                        title="Edit estimate"
+                      >
+                        <Icon className="icon" icon="mdi:pencil"></Icon>
+                      </button>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>

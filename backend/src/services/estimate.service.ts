@@ -100,6 +100,7 @@ export class EstimateService extends MainService<UserNode> {
         ${estimateStatusTableName}.id = ${this._tableName}.estimate_status_id
       WHERE
         ${this._tableName}.user_id = $1
+      ORDER BY ${this._tableName}.created_at DESC
     `
 
     const client = await this.connect()
