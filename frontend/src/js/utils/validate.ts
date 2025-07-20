@@ -1,5 +1,5 @@
 export interface OptionValidate {
-  value: string | number
+  value: string | number | undefined
   onFailed?: Function
   validators: {
     custom?: {
@@ -64,7 +64,7 @@ class Validate {
       // NUMBER
       // ************
       else if (validators.numeric) {
-        if (typeof value === 'number' && isNaN(value)) {
+        if (typeof value !== 'number' || isNaN(value)) {
           this.addError(validators.numeric?.message || '')
           isValid = false
         }

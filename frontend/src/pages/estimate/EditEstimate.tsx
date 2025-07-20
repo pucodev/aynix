@@ -10,6 +10,11 @@ import ClientModel from '../../js/models/client.model'
 import { Icon } from '@iconify/react/dist/iconify.js'
 import CreateClientDialog from '../../components/client/CreateClientDialog'
 import SimpleLoader from '../../components/loader/SimpleLoader'
+import CreateMaterialDialog from '../../components/materials/CreateMaterialDialog'
+import type { MaterialNode } from '../../js/models/material.model'
+import MaterialModel from '../../js/models/material.model'
+import { formatCurrency } from '../../js/utils/utils'
+import MaterialRow from '../../components/editEstimates/MaterialRow'
 
 export default function EditEstimate() {
   const [isLoading, setIsLoading] = useState(true)
@@ -20,6 +25,10 @@ export default function EditEstimate() {
   const { id } = useParams<{ id: string }>()
   const [isCreateClient, setIsCreateClient] = useState(false)
   const [selectedClientId, setSelectedClientId] = useState<number>()
+  const [description, setDescription] = useState('')
+  const [isCreateMaterial, setIsCreateMaterial] = useState(false)
+
+  const [materials, setMaterials] = useState<MaterialModel[]>([])
 
   async function fetchClients() {
     setIsLoadingClients(true)
@@ -54,6 +63,26 @@ export default function EditEstimate() {
     setSelectedClientId(client.id)
   }
 
+  function saveMaterial(material: MaterialNode) {
+    setIsCreateMaterial(false)
+    setMaterials(prev => [...prev, new MaterialModel(material)])
+  }
+
+  function deleteMaterial(index: number) {
+    setMaterials(prev => prev.filter((_, i) => i !== index))
+  }
+
+  function computeTotal() {
+    if (materials.length > 0) {
+      return formatCurrency(
+        materials.reduce(
+          (sum, item) => sum + (item.node.price || 0) * (item.node.qty || 0),
+          0,
+        ),
+      )
+    }
+  }
+
   useEffect(() => {
     init()
   }, [])
@@ -64,69 +93,141 @@ export default function EditEstimate() {
         <Loader />
       ) : (
         <>
-          <h1>Estimate #{estimate.id}</h1>
-
-          {/* CLIENTS */}
-          <div>
-            <div className="mb-1">
-              <label className="label mb-2">Client: </label>
-            </div>
-            <div className="is-flex is-gap-5">
-              {/* FIELD */}
-              <div
-                className={`field w-100 ${isClientError ? 'is-invalid' : ''}`}
-                style={{ maxWidth: '320px' }}
-              >
-                {isLoadingClients ? (
-                  <SimpleLoader />
-                ) : (
-                  <select
-                    className="select"
-                    value={selectedClientId}
-                    onChange={e => setSelectedClientId(Number(e.target.value))}
+          <div className="is-flex is-flex-column is-gap-3">
+            <h1>Estimate #{estimate.id}</h1>
+            <div className="is-flex is-flex-column is-gap-3">
+              {/* CLIENTS */}
+              <div>
+                <div className="mb-1">
+                  <label className="label mb-2">Client: </label>
+                </div>
+                <div className="is-flex is-gap-5">
+                  {/* FIELD */}
+                  <div
+                    className={`field w-100 ${isClientError ? 'is-invalid' : ''}`}
+                    style={{ maxWidth: '320px' }}
                   >
-                    <option>Select value</option>
-                    {clients.map(client => (
-                      <option key={client.node.id} value={client.node.id}>
-                        {client.node.name}
-                      </option>
-                    ))}
-                  </select>
+                    {isLoadingClients ? (
+                      <SimpleLoader />
+                    ) : (
+                      <select
+                        className="select"
+                        value={selectedClientId}
+                        onChange={e =>
+                          setSelectedClientId(Number(e.target.value))
+                        }
+                      >
+                        <option>Select value</option>
+                        {clients.map(client => (
+                          <option key={client.node.id} value={client.node.id}>
+                            {client.node.name}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                    {isClientError ? <p className="help">Help message</p> : ''}
+                  </div>
+
+                  {/* BUTTONS */}
+                  <div className="is-flex is-gap-3 is-align-items-center">
+                    <button
+                      className="btn is-tonal is-primary"
+                      title="Add client"
+                      onClick={() => {
+                        setIsCreateClient(true)
+                      }}
+                    >
+                      <Icon className="icon" icon="mdi:plus-thick"></Icon>
+                    </button>
+                    <button
+                      className="btn is-tonal is-primary"
+                      title="Refresh clients"
+                      onClick={fetchClients}
+                    >
+                      <Icon className="icon" icon="mdi:sync"></Icon>
+                    </button>
+                  </div>
+                </div>
+
+                {isCreateClient ? (
+                  <CreateClientDialog
+                    onClose={() => {
+                      setIsCreateClient(false)
+                    }}
+                    onSave={saveClient}
+                  />
+                ) : (
+                  <></>
                 )}
-                {isClientError ? <p className="help">Help message</p> : ''}
               </div>
 
-              {/* BUTTONS */}
-              <div className="is-flex is-gap-3 is-align-items-center">
+              {/* DESCRIPTION */}
+              <div className="field">
+                <label className="label">Description</label>
+                <textarea
+                  rows={4}
+                  className="input"
+                  placeholder="Text input"
+                  value={description}
+                  onChange={e => setDescription(e.target.value)}
+                ></textarea>
+              </div>
+
+              {/* MATERIALS */}
+              {isCreateMaterial ? (
+                <CreateMaterialDialog
+                  onClose={() => setIsCreateMaterial(false)}
+                  onSave={saveMaterial}
+                />
+              ) : (
+                <></>
+              )}
+              <div className="w-100 is-flex is-flex-column is-gap-3">
+                <h4>Materials</h4>
+                {materials.length > 0 ? (
+                  <table className="table is-striped is-hoverable is-table-color-primary is-fullwidth">
+                    <tbody>
+                      <tr>
+                        <th>Material</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Total price</th>
+                        <th></th>
+                      </tr>
+                      {materials.map((material, index) => (
+                        <MaterialRow
+                          key={material.node.id}
+                          material={material}
+                          onDelete={() => deleteMaterial(index)}
+                        />
+                      ))}
+                      <tr className="is-font-bold h5">
+                        <td colSpan={3} className="is-text-right">
+                          TOTAL
+                        </td>
+                        <td>{computeTotal()}</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                ) : (
+                  <></>
+                )}
                 <button
-                  className="btn is-tonal is-primary"
-                  title="Add client"
+                  className="btn is-outlined"
+                  style={{
+                    borderStyle: 'dashed',
+                    borderWidth: '2px',
+                    width: '100%',
+                  }}
                   onClick={() => {
-                    setIsCreateClient(true)
+                    setIsCreateMaterial(true)
                   }}
                 >
-                  <Icon className="icon" icon="mdi:plus-thick"></Icon>
-                </button>
-                <button
-                  className="btn is-tonal is-primary"
-                  title="Refresh clients"
-                  onClick={fetchClients}
-                >
-                  <Icon className="icon" icon="mdi:sync"></Icon>
+                  Add material
                 </button>
               </div>
             </div>
-
-            {isCreateClient ? (
-              <CreateClientDialog
-                onClose={() => {
-                  setIsCreateClient(false)
-                }}
-                onSave={saveClient}
-              />
-            ) : (
-              <></>
-            )}
           </div>
         </>
       )}
