@@ -9,6 +9,7 @@ import EstimateStatusModel from '../../js/models/estimateStatus.model'
 import ClientModel from '../../js/models/client.model'
 import AlertLoader from '../../components/loader/AlertLoader'
 import { useNavigate } from 'react-router-dom'
+import { Icon } from '@iconify/react/dist/iconify.js'
 
 interface ResponseNode {
   id: number
@@ -76,7 +77,6 @@ export default function Home() {
       urls.ESTIMATES.CREATE_EMPTY,
     )
 
-    console.log('response  = ', response.data.data)
     navigate(`/estimates/${response.data.data.id}`)
 
     setIsCreatingEstimate(false)
@@ -86,7 +86,7 @@ export default function Home() {
     <>
       <div className="is-flex is-justify-content-flex-end">
         <button className="btn is-primary" onClick={createEstimate}>
-          <iconify-icon className="icon" icon="mdi:plus"></iconify-icon>
+          <Icon className="icon" icon="mdi:plus"></Icon>
           <span>Add</span>
         </button>
       </div>

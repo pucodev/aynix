@@ -40,7 +40,6 @@ export class ClientController extends MainController {
           request.auth_user.user_id,
           request.body,
         )
-        console.log('data = ', data)
         return reply.send({ data })
       }
 
