@@ -1,0 +1,31 @@
+services:
+  aynix-api:
+    build:
+      context: ../../../backend
+      dockerfile: ../docker/prod/backend/Dockerfile
+    container_name: ${CONTAINER_NAME:-aynix-api}
+    ports:
+      - '${PORT:-4000}:3000'
+    restart: always
+    depends_on:
+      - aynix-db
+    networks:
+      - aynix-network
+
+  aynix-db:
+    image: postgres:17
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      - aynix-db:/var/lib/postgresql/data
+    networks:
+      - aynix-network
+
+volumes:
+  aynix-db:
+
+networks:
+  aynix-network:
+    driver: bridge

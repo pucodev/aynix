@@ -23,7 +23,7 @@ export default function EditEstimate() {
   const [isLoadingClients, setIsLoadingClients] = useState(false)
   const [estimate, setEstimate] = useState(new EstimateModel({}))
   const [clients, setClients] = useState<ClientModel[]>([])
-  const [isClientError, setIsClientError] = useState(false)
+  const [isClientError, _setIsClientError] = useState(false)
   const { id } = useParams<{ id: string }>()
   const [isCreateClient, setIsCreateClient] = useState(false)
   const [selectedClientId, setSelectedClientId] = useState<number>()

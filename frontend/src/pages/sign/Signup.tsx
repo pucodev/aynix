@@ -50,7 +50,7 @@ export default function Signup() {
         style={{ maxWidth: '600px' }}
       >
         <div className="w-100 is-flex is-justify-content-center">
-          <img src="/public/aynix logo sidebar.png" />
+          <img src="/aynix logo sidebar.png" />
         </div>
 
         <h1 className="is-text-center">Sign Up</h1>
