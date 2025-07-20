@@ -24,7 +24,7 @@ export class MainService<NodeType> {
     this._timestampFields = ['created_at', 'updated_at']
   }
 
-  async connect() {
+  public async connect() {
     return await this._fastify.pg.connect()
   }
 
@@ -102,8 +102,16 @@ export class MainService<NodeType> {
 
       // Compute fields and values to insert
       const setters: string[] = []
+      let index = 2
+      const extraParameters = []
       for (const key in validData) {
-        setters.push(key + ' = ' + format('%L', validData[key]))
+        let value = validData[key]
+        if (Array.isArray(value)) {
+          value = JSON.stringify(value)
+        }
+        extraParameters.push(value)
+        setters.push(`${key} = $${index}`)
+        index++
       }
 
       const sql = format(
@@ -112,12 +120,7 @@ export class MainService<NodeType> {
         this._id,
       )
 
-      const { rows } = await client.query(
-        // Query
-        sql,
-        // Parameters
-        [id],
-      )
+      const { rows } = await client.query(sql, [id, ...extraParameters])
 
       if (Array.isArray(rows)) {
         return rows[0]

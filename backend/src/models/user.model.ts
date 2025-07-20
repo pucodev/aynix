@@ -12,6 +12,12 @@ export interface UserNode {
   password?: string
 }
 
+export interface DecodedToken {
+  user_id: number
+}
+
+const SECRET_TOKEN = process.env.JWT_SECRET || 'SECRET_KEY'
+
 export class UserModel extends MainModel<UserNode> {
   constructor(node: UserNode) {
     super(node)
@@ -23,13 +29,20 @@ export class UserModel extends MainModel<UserNode> {
 
   getTokens() {
     const userId = this.node.id
-    const secret = process.env.JWT_SECRET || 'SECRET_KEY'
 
-    const accessToken = jwt.sign({ userId }, secret, {
+    if (typeof userId === 'undefined') {
+      return
+    }
+
+    const data: DecodedToken = {
+      user_id: userId,
+    }
+
+    const accessToken = jwt.sign(data, SECRET_TOKEN, {
       expiresIn: '1d',
     })
 
-    const refreshToken = jwt.sign({ userId }, secret, {
+    const refreshToken = jwt.sign(data, SECRET_TOKEN, {
       expiresIn: '15d',
     })
 

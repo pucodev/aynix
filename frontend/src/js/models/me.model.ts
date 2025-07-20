@@ -11,7 +11,7 @@ const USER_TOKEN_TAG = '_ut'
 
 export default class MeModel extends UserModel {
   public static getUserToken() {
-    return ''
+    return this.getTokens()?.access_token || ''
   }
 
   public static getRefreshToken() {
@@ -36,6 +36,10 @@ export default class MeModel extends UserModel {
       data,
     )
     return response.data.data
+  }
+
+  public static clearTokens() {
+    localStorage.removeItem(USER_TOKEN_TAG)
   }
 
   public static saveTokens(tokens: UserTokens) {

@@ -10,6 +10,7 @@ const fastify = Fastify({
 
 await fastify.register(fastifyCors, {
   origin: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
 })
 
 fastify.register(fastifyFormbody)

@@ -4,8 +4,9 @@ import { router } from './routes/index.tsx'
 import { RouterProvider } from 'react-router-dom'
 
 // Styles
-import './styles/index.css'
 import './styles/vendor/pucoui.min.css'
+import './styles/index.css'
+import './styles/loader.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

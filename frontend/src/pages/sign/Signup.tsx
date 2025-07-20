@@ -5,9 +5,9 @@ import { showError } from '../../js/utils/utils'
 import { isApiError } from '../../js/api'
 
 export default function Signup() {
-  const [email, setEmail] = useState('email@yopmail.com')
-  const [password, setPassword] = useState('password')
-  const [code, setCode] = useState('1234')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [code, setCode] = useState('')
   const navigate = useNavigate()
 
   async function signup() {
@@ -49,6 +49,10 @@ export default function Signup() {
         className="is-flex w-100 is-flex-column is-gap-5"
         style={{ maxWidth: '600px' }}
       >
+        <div className="w-100 is-flex is-justify-content-center">
+          <img src="/public/aynix logo sidebar.png" />
+        </div>
+
         <h1 className="is-text-center">Sign Up</h1>
 
         <div className="is-flex is-gap-3 is-flex-column">
