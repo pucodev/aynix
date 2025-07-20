@@ -11,4 +11,7 @@ export const urls = {
     CREATE_EMPTY: `${API_URL}/estimates/empty`,
     SUMMARY: `${API_URL}/estimates/summary`,
   },
+  CLIENTS: {
+    ROOT: `${API_URL}/clients`,
+  },
 }

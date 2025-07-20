@@ -7,6 +7,7 @@ import {
 import { authRoutes } from './auth.route'
 import { estimateRoutes } from './estimate.route'
 import auth from '../../hooks/authenticate'
+import { clientRoutes } from './client.route'
 
 async function authenticate(request: FastifyRequest, reply: FastifyReply) {
   await auth(request, reply)
@@ -21,8 +22,12 @@ export function v1Routes(
   // authenticate routes
   fastify.register(async instance => {
     instance.addHook('preHandler', authenticate)
+
     instance.register(estimateRoutes, {
       prefix: '/estimates',
+    })
+    instance.register(clientRoutes, {
+      prefix: '/clients',
     })
   })
 }
