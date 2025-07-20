@@ -133,6 +133,10 @@ export default function Home() {
                       <button
                         className="btn is-tonal is-secondary is-rounded"
                         title="Edit estimate"
+                        disabled={
+                          item.estimateStatus.node.id ===
+                          EstimateStatusModel.COMPLETED_STATUS_ID
+                        }
                       >
                         <Icon className="icon" icon="mdi:pencil"></Icon>
                       </button>

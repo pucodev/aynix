@@ -54,7 +54,14 @@ export default function EditEstimate() {
       'get',
       `${urls.ESTIMATES.ROOT}/${id}`,
     )
+    const estimate = response.data.data
     setEstimate(new EstimateModel(response.data.data))
+    setDescription(estimate.description || '')
+    setLaborCost(estimate.labor_cost)
+    setMaterials(
+      estimate.materials?.map(material => new MaterialModel(material)) || [],
+    )
+    setSelectedClientId(estimate.client_id)
 
     // Fetch clients
     fetchClients()
