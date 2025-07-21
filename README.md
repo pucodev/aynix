@@ -129,4 +129,10 @@ This project is licensed under the [GNU GPL v3](LICENSE). You are free to use, m
 
 ---
 
+## Extra info
+
+For more information about the development process, you can visit the following [documentation](/aynix-obsidian-vault).
+
+---
+
 _Made with ❤️ and ☕_
