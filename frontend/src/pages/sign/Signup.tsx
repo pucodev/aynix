@@ -3,15 +3,18 @@ import { useState } from 'react'
 import MeModel from '../../js/models/me.model'
 import { showError } from '../../js/utils/utils'
 import { isApiError } from '../../js/api'
+import SimpleLoader from '../../components/loader/SimpleLoader'
 
 export default function Signup() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [code, setCode] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const navigate = useNavigate()
 
   async function signup() {
     try {
+      setIsSubmitting(true)
       const response = await MeModel.signup({
         email,
         password,
@@ -20,6 +23,7 @@ export default function Signup() {
 
       MeModel.saveTokens(response.tokens)
       navigate('/')
+      setIsSubmitting(false)
     } catch (error) {
       if (isApiError(error)) {
         switch (error.api_error_code) {
@@ -41,6 +45,8 @@ export default function Signup() {
       } else {
         showError('An error occurred. Please try again')
       }
+
+      setIsSubmitting(false)
     }
   }
   return (
@@ -88,9 +94,17 @@ export default function Signup() {
           </div>
 
           <div className="w-100 mt-3">
-            <button className="btn" style={{ width: '100%' }} onClick={signup}>
-              Sign Up
-            </button>
+            {isSubmitting ? (
+              <SimpleLoader />
+            ) : (
+              <button
+                className="btn"
+                style={{ width: '100%' }}
+                onClick={signup}
+              >
+                Sign Up
+              </button>
+            )}
           </div>
 
           {/* Signin */}

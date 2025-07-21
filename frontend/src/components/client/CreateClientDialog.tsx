@@ -5,6 +5,7 @@ import { showError } from '../../js/utils/utils'
 import Api from '../../js/api'
 import { urls } from '../../js/api/urls'
 import type { ClientNode } from '../../js/models/client.model'
+import SimpleLoader from '../loader/SimpleLoader'
 
 interface Props {
   onClose?: Function
@@ -15,7 +16,7 @@ export default function CreateClientDialog({ onClose, onSave }: Props) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
-  const [_isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const [isErrorName, setIsErrorName] = useState(false)
   const [isErrorEmail, setIsErrorEmail] = useState(false)
@@ -140,12 +141,18 @@ export default function CreateClientDialog({ onClose, onSave }: Props) {
             </div>
           </section>
           <footer className="dialog-footer">
-            <button className="btn is-outlined" onClick={close}>
-              Cancelar
-            </button>
-            <button className="btn is-success" onClick={save}>
-              Guardar
-            </button>
+            {isSubmitting ? (
+              <SimpleLoader />
+            ) : (
+              <>
+                <button className="btn is-outlined" onClick={close}>
+                  Cancelar
+                </button>
+                <button className="btn is-success" onClick={save}>
+                  Guardar
+                </button>
+              </>
+            )}
           </footer>
         </div>
       </div>
